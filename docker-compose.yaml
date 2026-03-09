@@ -1,0 +1,19 @@
+services:
+  ollama:
+  # ollama/ollama:rocm for AMD hardware
+    image: ollama/ollama:latest
+    container_name: ollama-amd
+    ## Linux-specific
+    # devices:
+    #   - "/dev/kfd:/dev/kfd"
+    #   - "/dev/dri:/dev/dri"
+    volumes:
+      - /Users/tharitrattananenya/.ollama:/root/.ollama
+    ports:
+      - "11434:11434"
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+      # Optional: Force a specific ROCm version if GPU is older
+      # For RX6600
+      - HSA_OVERRIDE_GFX_VERSION=10.3.0
+    restart: unless-stopped
