@@ -1,14 +1,21 @@
 services:
   ollama:
   # ollama/ollama:rocm for AMD hardware
-    image: ollama/ollama:latest
+    image: docker.io/ollama/ollama:rocm
     container_name: ollama-amd
-    ## Linux-specific
-    # devices:
-    #   - "/dev/kfd:/dev/kfd"
-    #   - "/dev/dri:/dev/dri"
+    # Podman-specific: keeps your host's render/video group permissions
+    group_add:
+      - keep-groups
+    # Podman-specific: prevents SELinux/AppArmor from blocking /dev/kfd
+    security_opt:
+      - label=disable
+    # Linux-specific: find GPU
+    devices:
+      - "/dev/kfd:/dev/kfd"
+      - "/dev/dri:/dev/dri"
+    # For persist image
     volumes:
-      - /Users/tharitrattananenya/.ollama:/root/.ollama
+      - ./ollama_data:/root/.ollama
     ports:
       - "11434:11434"
     environment:
