@@ -23,4 +23,6 @@ services:
       # Optional: Force a specific ROCm version if GPU is older
       # For RX6600
       - HSA_OVERRIDE_GFX_VERSION=10.3.0
+      # Free VRAM after stop model
+      - OLLAMA_KEEP_ALIVE=0
     restart: unless-stopped
